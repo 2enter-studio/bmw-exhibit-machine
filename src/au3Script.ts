@@ -1,8 +1,9 @@
 import fs from 'fs'
-const {UE_PROJ_PATH, UE_EDITOR_PATH, OBS_PATH, AUTOIT_PATH} = Bun.env
-import {exec} from 'child_process'
+import { exec } from 'child_process'
 
-if (!UE_PROJ_PATH || !UE_EDITOR_PATH || !OBS_PATH || !AUTOIT_PATH) {
+const { UE_PROJ_PATH, UE_EDITOR_PATH, OBS_PATH, AUTOIT_PATH, UE_PLAY_BTN_POS } = Bun.env
+
+if (!UE_PROJ_PATH || !UE_EDITOR_PATH || !OBS_PATH || !AUTOIT_PATH || !UE_PLAY_BTN_POS) {
 	throw new Error('env not set')
 }
 
@@ -19,29 +20,26 @@ const script = `
 		Run($ue_editor & " " & '"' & $ue_project & '"')
 	EndFunc
 
-	open_obs()
-	sleep(1000)
-
 	open_ue()
-	sleep(5000)
-
-	open_arena()
-	sleep(80000)
+	sleep(20000)
 
 	WinActivate("[REGEXPTITLE:Unreal Editor.*]")
 	sleep(1000)
-	MouseMove(590, 90)
+	MouseMove(${UE_PLAY_BTN_POS})
 	sleep(3000)
 	MouseClick("left")
 	sleep(5000)
 		
 	${`
-			Send("{Alt down}{p down}{p up}{Alt up}")
-			sleep(2000)
-		`.repeat(5)}
+	Send("{Alt down}{p down}{p up}{Alt up}")
+	sleep(2000)
+	`.repeat(5)}
 
-		WinActivate("[REGEXPTITLE:Unreal Editor.*]")
-		MouseMove(590, 50)
+	open_obs()
+	sleep(1000)
+
+	WinActivate("[REGEXPTITLE:Unreal Editor.*]")
+	MouseMove(0, 0)
 
 	sleep(3000)
 	Exit
@@ -54,4 +52,4 @@ function genAu3Script() {
 	fs.writeFileSync('bot.au3', script)
 }
 
-export {genAu3Script, runAu3}
+export { genAu3Script, runAu3 }

@@ -1,14 +1,14 @@
-import {Hono} from 'hono'
-import {html} from 'hono/html'
+import { Hono } from 'hono'
+import { html } from 'hono/html'
 
 import { genAu3Script, runAu3 } from './au3Script.ts';
 
 const app = new Hono();
-const { WS_URL } = Bun.env
+const { WS_URL, USE_BOT } = Bun.env
 
 app.get('/img/:num', c => {
 
-    const {num} = c.req.param()
+    const { num } = c.req.param()
     if (!num) c.text('not a number', 400)
     if (isNaN(Number(num))) {
         console.log('not a number', num)
@@ -81,10 +81,13 @@ app.get('/img/:num', c => {
 const { platform } = process
 console.log(`running on platform: ${platform}`)
 
-genAu3Script();
-if (platform === 'win32'){
-    console.log('starting au3 bot')
-    runAu3()
+if (USE_BOT === 'true') {
+    genAu3Script();
+    if (platform === 'win32') {
+        console.log('starting au3 bot')
+        runAu3()
+    }
 }
 
-export default app;
+
+export default app
