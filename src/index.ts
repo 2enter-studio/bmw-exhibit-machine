@@ -1,7 +1,7 @@
 import {Hono} from 'hono'
 import {html} from 'hono/html'
 
-import {genAu3Script} from './au3Script.ts';
+import { genAu3Script, runAu3 } from './au3Script.ts';
 
 const app = new Hono();
 const { WS_URL } = Bun.env
@@ -78,6 +78,13 @@ app.get('/img/:num', c => {
     );
 })
 
+const { platform } = process
+console.log(`running on platform: ${platform}`)
+
 genAu3Script();
+if (platform === 'win32'){
+    console.log('starting au3 bot')
+    runAu3()
+}
 
 export default app;
