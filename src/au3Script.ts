@@ -1,7 +1,8 @@
 import fs from 'fs'
-const {UE_PROJ_PATH, UE_EDITOR_PATH, OBS_PATH} = Bun.env
+const {UE_PROJ_PATH, UE_EDITOR_PATH, OBS_PATH, AUTOIT_PATH} = Bun.env
+import {exec} from 'child_process'
 
-if (!UE_PROJ_PATH || !UE_EDITOR_PATH || !OBS_PATH) {
+if (!UE_PROJ_PATH || !UE_EDITOR_PATH || !OBS_PATH || !AUTOIT_PATH) {
 	throw new Error('env not set')
 }
 
@@ -45,9 +46,12 @@ const script = `
 	sleep(3000)
 	Exit
 `
+function runAu3() {
+	exec(`"${AUTOIT_PATH}" ./bot.au3`);
+}
 
 function genAu3Script() {
 	fs.writeFileSync('bot.au3', script)
 }
 
-export {genAu3Script}
+export {genAu3Script, runAu3}
