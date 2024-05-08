@@ -1,10 +1,18 @@
-import fs from 'fs'
-import { exec } from 'child_process'
+import fs from 'fs';
+import { exec } from 'child_process';
 
-const { UE_PROJ_PATH, UE_EDITOR_PATH, OBS_PATH, AUTOIT_PATH, UE_PLAY_BTN_POS } = Bun.env
+const { UE_PROJ_PATH, UE_EDITOR_PATH, OBS_PATH, AUTOIT_PATH, UE_PLAY_BTN_POS, UE_WAIT_SEC } =
+	Bun.env;
 
-if (!UE_PROJ_PATH || !UE_EDITOR_PATH || !OBS_PATH || !AUTOIT_PATH || !UE_PLAY_BTN_POS) {
-	throw new Error('env not set')
+if (
+	!UE_PROJ_PATH ||
+	!UE_EDITOR_PATH ||
+	!OBS_PATH ||
+	!AUTOIT_PATH ||
+	!UE_PLAY_BTN_POS ||
+	!UE_WAIT_SEC
+) {
+	throw new Error('env not set');
 }
 
 const script = `
@@ -21,7 +29,7 @@ const script = `
 	EndFunc
 
 	open_ue()
-	sleep(20000)
+	sleep(${UE_WAIT_SEC})
 
 	WinActivate("[REGEXPTITLE:Unreal Editor.*]")
 	sleep(1000)
@@ -43,13 +51,13 @@ const script = `
 
 	sleep(3000)
 	Exit
-`
+`;
 function runAu3() {
 	exec(`"${AUTOIT_PATH}" ./bot.au3`);
 }
 
 function genAu3Script() {
-	fs.writeFileSync('bot.au3', script)
+	fs.writeFileSync('bot.au3', script);
 }
 
-export { genAu3Script, runAu3 }
+export { genAu3Script, runAu3 };
