@@ -10,7 +10,7 @@ if (
 	!OBS_PATH ||
 	!AUTOIT_PATH ||
 	!UE_PLAY_BTN_POS ||
-	!UE_WAIT_SEC
+	!UE_WAIT_TIME
 ) {
 	throw new Error('env not set');
 }
