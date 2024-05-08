@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { exec } from 'child_process';
 
-const { UE_PROJ_PATH, UE_EDITOR_PATH, OBS_PATH, AUTOIT_PATH, UE_PLAY_BTN_POS, UE_WAIT_SEC } =
+const { UE_PROJ_PATH, UE_EDITOR_PATH, OBS_PATH, AUTOIT_PATH, UE_PLAY_BTN_POS, UE_WAIT_TIME } =
 	Bun.env;
 
 if (
@@ -29,7 +29,7 @@ const script = `
 	EndFunc
 
 	open_ue()
-	sleep(${UE_WAIT_SEC})
+	sleep(${UE_WAIT_TIME})
 
 	WinActivate("[REGEXPTITLE:Unreal Editor.*]")
 	sleep(1000)
